@@ -48,3 +48,6 @@ Acorde a las normativas de Cumplimiento, el estatus actuarial asignado a estas c
 ## 📂 Estructura del Repositorio
 * `aml_kmeans_model.py`: Script principal ejecutable con la parametrización de K-Means.
 * `/data`: (Ignorado en Git) Carpeta de destino para los datasets `aml_synthetic_data_raw.csv` y `aml_results_clustered.csv`.
+
+## ⚠️ Disclaimer Legal y Ético
+Este proyecto es estrictamente un ejercicio académico y de demostración de portafolio. Todos los datos utilizados han sido generados sintéticamente. No se incluye, procesa ni expone Información Personal Identificable (PII) ni información financiera real de ninguna institución bancaria.
