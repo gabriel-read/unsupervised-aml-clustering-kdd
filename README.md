@@ -32,6 +32,34 @@ El algoritmo logró converger exitosamente y segmentar el comportamiento transac
 ### Validación Paramétrica Cruzada (IBM SPSS Statistics)
 Para garantizar la robustez topológica y evitar sobreajustes locales, se realizó una validación cruzada exportando la matriz de datos a IBM SPSS Statistics, logrando los siguientes resultados espaciales:
 
+### 🛠️ Guía de Replicación en IBM SPSS Statistics (Validación Cruzada)
+
+Para garantizar la transparencia y permitir la auditoría del modelo, cualquier Oficial de Cumplimiento o analista de riesgos puede replicar la validación paramétrica siguiendo estos pasos en SPSS utilizando el archivo `aml_synthetic_data_raw.csv`:
+
+**Paso 1: Importación de Datos**
+* Ve a **Archivo > Importar datos > CSV Data...** y selecciona el dataset crudo.
+* Asegúrate de que las tres variables operativas estén configuradas con medida de **Escala**.
+
+**Paso 2: Estandarización de Variables (Crucial)**
+* Ve a **Analizar > Estadísticos descriptivos > Descriptivos...**
+* Añade las variables: `Monto_Promedio`, `Frecuencia_Mensual` e `Indice_Riesgo`.
+* **Obligatorio:** Marca la casilla **"Guardar valores estandarizados como variables"** y haz clic en Aceptar. (Esto creará las variables con el prefijo "Z").
+
+**Paso 3: Parametrización del Modelo K-Medias**
+* Ve a **Analizar > Clasificar > Conglomerado de K medias...**
+* **Variables:** Utiliza *únicamente* las tres nuevas variables estandarizadas (Z).
+* **Etiquetar casos:** Selecciona `Cliente_ID`.
+* **Número de conglomerados:** Establece el valor en **3**.
+* **Iterar:** Configura un máximo de 10 iteraciones.
+* **Guardar:** Marca "Pertenencia a conglomerados" y "Distancia desde el centro".
+* **Opciones:** Marca la **"Tabla ANOVA"**.
+* Haz clic en **Aceptar**.
+
+**Paso 4: Interpretación del Veredicto**
+* En la ventana de resultados, ubica la tabla **ANOVA**. 
+* Verifica que la columna **Sig.** (p-valor) sea `.000` para las tres dimensiones. Esto confirma el rechazo de la hipótesis nula de igualdad geométrica y valida estadísticamente la separación de los clústeres.
+* En la vista de datos, ordena de forma descendente la nueva variable de **Distancia**. Los casos en la cima representan las anomalías de máximo riesgo listas para investigación (EDD).
+
 * **Conglomerado 2 (Comportamiento Base):** Agrupó a los 995 clientes regulares, ubicando su centroide prácticamente en el origen del plano estandarizado (Puntuaciones Z cercanas a 0).
 * **Conglomerado 1 (Riesgo de Montos Extremos y Alta Jurisdicción):** Aisló 4 entidades anómalas situadas a más de 15 desviaciones estándar de la media poblacional.
 * **Conglomerado 3 (Hiper-transaccionalidad / Pitufeo):** Aisló un caso extremo con una frecuencia operativa ubicada a más de 25 desviaciones estándar de la media.
